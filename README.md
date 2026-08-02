@@ -108,7 +108,9 @@ plan update.
 1. `open-web-math/open-web-math` — `openwebmath` — `ODC-By-1.0 + CommonCrawl-ToU`
 2. `nvidia/OpenMathInstruct-1` — `openmathinstruct-1` — `NVIDIA`
 3. `nvidia/OpenMathInstruct-2` — `openmathinstruct-2` — `CC-BY-4.0`
-4. `manu/project_gutenberg` — `project-gutenberg` — `Public Domain`
+4. `manu/project_gutenberg` — English split (`en`) only for now —
+   `project-gutenberg-en` — `Public Domain`. Do not process or upload
+   non-English splits without an explicit future plan update.
 5. `HuggingFaceH4/ultrachat_200k` — `ultrachat-200k` — `MIT`
 6. `OpenAssistant/oasst1` — `oasst1` — `Apache-2.0`
 7. `Open-Orca/OpenOrca` — `openorca` — `MIT`
