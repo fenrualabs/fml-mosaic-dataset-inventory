@@ -1,14 +1,11 @@
-# FML-Mosaic-527B Dataset Inventory (Expanded)
+# FML-Mosaic-527B Dataset Inventory (Cleaned – Commercial-Safe Focus)
 
 **Compiled for Fenrua Labs / FML-Mosaic-527B text generation model training.**  
-**Date:** 2026-08-02 (updated with continued deep search)  
-**Focus:** High-quality text-only datasets. Prioritize permissive licenses (Apache-2.0, MIT, BSD, ODC-By, CC-BY, Public Domain, commercially permissive). Avoid or flag restrictive (NC, unclear).  
-**Sources searched:** Hugging Face, GitHub, Common Crawl derivatives, AllenAI, BigCode, NVIDIA, EleutherAI, Papers with Code, Kaggle, academic repos. Extensive multi-round deep search.  
+**Date:** 2026-08-02 (cleaned)  
+**Focus:** High-quality text-only datasets with permissive / commercial-friendly licenses (Apache-2.0, MIT, BSD, ODC-By, CC-BY, Public Domain, NVIDIA commercial licenses). Restricted / non-commercial items have been removed.  
+**Sources searched:** Hugging Face, GitHub, Common Crawl derivatives, AllenAI, BigCode, NVIDIA, EleutherAI, Pleias, academic repos. Extensive multi-round deep search.  
 
-**User already has ~26GB JSONs.** This extends resources.  
-
-**Last Overkill Prompt (as requested):**  
-"You are a dataset acquisition specialist. Your mission is to find every possible high-quality text dataset for training a large-scale text generation model, covering code, math, STEM, general web text, books, academic papers, and conversational data. Use the connected GitHub search tool with precise queries, not vague ones. Also, search Hugging Face datasets, Kaggle, Common Crawl derivatives, academic repositories like Allen Institute and Papers with Code, and any other credible source. For each dataset, document its name, URL, estimated size, license, language coverage, content type, quality notes, and access method. Prioritize permissively licensed data like Apache two point zero, MIT, BSD, or CC-BY. Explicitly avoid anything with restrictive terms or unclear licensing. Organize everything into a clean, structured markdown report with sections by category and a summary table. Include direct links and note any conversion steps needed. Be exhaustive, not selective. Leave no stone unturned."
+**User already has ~26GB JSONs.** This extends resources with license-safe options.  
 
 ---
 
@@ -16,239 +13,186 @@
 
 ### Common Pile v0.1
 - **URL:** https://huggingface.co/common-pile | Collections: https://huggingface.co/collections/common-pile/common-pile-v01-raw-data | Paper: https://arxiv.org/abs/2506.05209 | GitHub: https://github.com/r-three/common-pile/
-- **Size:** 8 TB raw; ~1.8 TB filtered/deduped. ~233M documents.
-- **License:** Public Domain + Openly Licensed sources (highly permissive / license-safe).
+- **Size:** 8 TB raw; ~1.8 TB filtered/deduped.
+- **License:** Public Domain + Openly Licensed sources only (highly permissive / license-safe).
 - **Languages:** Multilingual, English dominant.
-- **Content:** 30 sources: research papers, code, books, encyclopedias, educational materials, audio transcripts, etc. Includes arxiv_papers, arxiv_abstracts, caselaw, biodiversity, etc.
-- **Quality Notes:** Largest fully open/permissive pretraining set. Used to train competitive Comma 7B models. Excellent for commercial use.
-- **Access:** HF collections (raw + filtered). Streaming recommended.
+- **Content:** 30 curated sources: research papers, code, books, encyclopedias, educational materials, legal, patents, etc.
+- **Quality Notes:** Largest fully open/permissive pretraining set. Excellent for commercial use.
+- **Access:** HF collections (raw + filtered). Streaming recommended. See COMMON_PILE_COMPONENTS.md for full source list.
+
+### Common Corpus (PleIAs/common_corpus)
+- **URL:** https://huggingface.co/datasets/PleIAs/common_corpus
+- **Size:** ~2.27 trillion tokens.
+- **License:** Truly open — only public domain / uncopyrighted or free/permissive licenses.
+- **Content:** Six collections (Open Culture, Open Government, Open Science, Open Web, Open Code, Open Semantic). Books, newspapers, scientific, legal/government, code, etc.
+- **Quality Notes:** One of the strongest fully open large-scale corpora.
 
 ### FineWeb (HuggingFaceFW/fineweb)
 - **URL:** https://huggingface.co/datasets/HuggingFaceFW/fineweb
-- **Size:** ~15-18.5T tokens (~54 TB disk).
+- **Size:** ~15–18.5T tokens (~54 TB disk).
 - **License:** ODC-By 1.0 (+ Common Crawl ToU).
 - **Languages:** English.
-- **Content:** Heavily filtered, deduplicated Common Crawl (96 dumps). High quality web text.
-- **Quality Notes:** Outperforms C4, Dolma, Pile, SlimPajama, RedPajama on many benchmarks. Includes FineWeb-Edu subset (educational filter, 1.3T+).
-- **Access:** HF load_dataset / streaming. Subsets available (10BT, 100BT, etc.).
+- **Content:** Heavily filtered, deduplicated Common Crawl. High quality web text. Includes FineWeb-Edu subset.
+- **Access:** HF load_dataset / streaming. Subsets available (10BT, 100BT, 350BT).
 
 ### FineWeb-2
-- **URL:** https://huggingface.co/datasets/HuggingFaceFW/fineweb-2 | GitHub: https://github.com/huggingface/fineweb-2
-- **Size:** Large (billions of rows, multi-lingual scale).
+- **URL:** https://huggingface.co/datasets/HuggingFaceFW/fineweb-2
+- **Size:** ~20 TB scale, multilingual (1000+ languages).
 - **License:** ODC-By.
-- **Notes:** Multilingual extension / improved pipeline.
+- **Notes:** Multilingual extension (pair with FineWeb for English).
 
 ### RefinedWeb (tiiuae/falcon-refinedweb)
 - **URL:** https://huggingface.co/datasets/tiiuae/falcon-refinedweb
-- **Size:** Public extract ~500-650B tokens / ~2.8 TB clean text (968M pages); full was ~5T.
+- **Size:** Public extract ~500–650B tokens.
 - **License:** ODC-By 1.0 (+ CC ToU).
-- **Languages:** English.
-- **Content:** Stringent filtering + large-scale deduplication of Common Crawl. Used for Falcon models.
-- **Quality Notes:** High quality web-only. Good complement to FineWeb.
-- **Access:** HF.
+- **Notes:** High-quality filtered Common Crawl. Used for Falcon models.
 
 ### Dolma (allenai/dolma)
-- **URL:** https://huggingface.co/datasets/allenai/dolma | https://allenai.github.io/dolma/
-- **Size:** 3 trillion tokens (earlier versions; check latest Dolma 3 for updates ~5.9T mixes).
-- **License:** ODC-BY (updated from ImpACT).
-- **Languages:** English primarily.
-- **Content:** Diverse mix of web, academic publications, code, books, encyclopedic.
-- **Quality Notes:** Open, well-documented from AllenAI/OLMo project.
-- **Access:** HF.
+- **URL:** https://huggingface.co/datasets/allenai/dolma
+- **Size:** Multi-trillion tokens.
+- **License:** ODC-BY.
+- **Content:** Diverse mix of web, academic, code, books, encyclopedic.
 
-### RedPajama-Data / V2 (togethercomputer)
-- **URL:** https://huggingface.co/datasets/togethercomputer/RedPajama-Data-V2 (and V1)
-- **Size:** V2 ~30T tokens (deduped); V1 ~1.2T.
-- **License:** Apache-2.0 (code); data subject to source licenses + CC ToU. Quality signals provided.
-- **Languages:** Multi (EN dominant).
-- **Content:** CommonCrawl, C4, GitHub, Books, ArXiv, Wikipedia, StackExchange.
-- **Notes:** Good annotations for further filtering. Books subset may have issues (often dropped).
-
-### SlimPajama-627B
-- Apache 2.0, 627B tokens cleaned/deduped RedPajama.
-
-### The Pile (EleutherAI/pile)
-- **URL:** https://huggingface.co/datasets/EleutherAI/pile | https://pile.eleuther.ai/
-- **Size:** ~825 GB / 22 components.
-- **License:** Mixed (repo MIT; individual components vary — check carefully). Successor is Common Pile.
-- **Notes:** Classic but mixed licenses; prefer Common Pile for safety.
+### RedPajama-Data-V2 / SlimPajama-627B
+- **URL:** https://huggingface.co/datasets/togethercomputer/RedPajama-Data-V2 | https://huggingface.co/datasets/cerebras/SlimPajama-627B
+- **Size:** RedPajama-V2 ~30T tokens; SlimPajama 627B tokens.
+- **License:** Apache-2.0 (code) + source licenses / CC ToU; SlimPajama Apache 2.0.
+- **Notes:** Quality signals available for further filtering.
 
 ### C4 (allenai/c4)
 - **URL:** https://huggingface.co/datasets/allenai/c4
-- **Size:** Large (hundreds of GB).
-- **License:** ODC-By or similar (from Common Crawl).
-- **Notes:** Colossal Cleaned Common Crawl. Foundational but older quality filtering.
+- **License:** ODC-By (+ CC ToU).
+- **Notes:** Classic cleaned Common Crawl.
 
 ---
 
 ## 2. Code Datasets
 
 ### The Stack v2 (bigcode/the-stack-v2)
-- **URL:** https://huggingface.co/datasets/bigcode/the-stack-v2 | Project: https://www.bigcode-project.org/
-- **Size:** Full ~67.5 TB uncompressed; deduped ~32 TB; train sets hundreds of billions tokens. 658+ languages.
-- **License:** Filtered to permissive licenses only (list of ~193 including MIT, Apache, BSD, etc.). "other" on HF but provenance for each file. Requires contact agreement for full access sometimes.
-- **Content:** Source code from Software Heritage, issues, notebooks, commits.
-- **Quality Notes:** Gold standard for code LLMs. Used for StarCoder2. SWHIDs for transparency.
-- **Access:** HF (agree to terms), subsets available. Paper: arXiv:2402.19173.
+- **URL:** https://huggingface.co/datasets/bigcode/the-stack-v2
+- **Size:** Full ~67.5 TB; deduped ~32 TB; hundreds of billions of tokens. 600+ languages.
+- **License:** Filtered to permissive licenses only (MIT, Apache, BSD, etc.) with file-level provenance.
+- **Content:** Source code from Software Heritage + extras (issues, notebooks, commits).
+- **Quality Notes:** Gold standard for code generation models (StarCoder2).
+- **Access:** HF (may require agreement for full bulk).
 
-### The Stack v1 / StarCoderData (bigcode/the-stack, bigcode/starcoderdata)
-- **URL:** https://huggingface.co/datasets/bigcode/the-stack | https://huggingface.co/datasets/bigcode/starcoderdata
-- **Size:** Stack ~6.4 TB (v1.1 near-dedup); StarCoderData 783 GB code + issues + notebooks.
-- **License:** Permissive filtered (Apache-compatible etc.).
-- **Notes:** Earlier version; still excellent. 86-358 languages depending on version.
+### The Stack v1 / StarCoderData
+- Earlier permissive-filtered versions still useful.
 
 ---
 
 ## 3. Math / STEM
 
-### OpenWebMath (open-web-math/open-web-math)
-- **URL:** https://huggingface.co/datasets/open-web-math/open-web-math | GitHub: https://github.com/keirp/OpenWebMath
-- **Size:** 14.7B tokens / ~6.3M docs / ~27-56 GB.
+### OpenWebMath
+- **URL:** https://huggingface.co/datasets/open-web-math/open-web-math
+- **Size:** 14.7B tokens / ~6.3M docs.
 - **License:** ODC-By 1.0 (+ CC ToU).
-- **Languages:** English.
-- **Content:** High-quality mathematical web text from Common Crawl (LaTeX extracted, filtered).
-- **Quality Notes:** Models trained on it punch above weight for math. Paper: arXiv:2310.06786.
-- **Access:** HF load_dataset.
+- **Notes:** High-quality mathematical web text with LaTeX.
 
 ### OpenMathInstruct-1 (nvidia/OpenMathInstruct-1)
 - **URL:** https://huggingface.co/datasets/nvidia/OpenMathInstruct-1
-- **Size:** 1.8M problem-solution pairs / ~8.94 GB.
+- **Size:** 1.8M problem-solution pairs.
 - **License:** NVIDIA License (permits commercial usage).
-- **Content:** Synthesized code-interpreter solutions for GSM8K + MATH using Mixtral.
-- **Quality Notes:** Commercially permissive. Strong for math instruction tuning. Paper arXiv:2402.10176.
 
 ### OpenMathInstruct-2 (nvidia/OpenMathInstruct-2)
 - **URL:** https://huggingface.co/datasets/nvidia/OpenMathInstruct-2
-- **Size:** 14M problem-solution pairs / ~12.6 GB.
+- **Size:** 14M pairs.
 - **License:** CC-BY-4.0.
-- **Content:** Larger scale, using Llama-3.1-405B, including new synthesized questions. Decontaminated.
-- **Quality Notes:** Excellent scale-up for math SFT. Paper arXiv:2410.01560.
 
-### Proof-Pile (hoskinson-center/proof-pile)
+### Proof-Pile
 - **URL:** https://huggingface.co/datasets/hoskinson-center/proof-pile
 - **Size:** 13 GB / 8.3B tokens.
 - **License:** Apache-2.0.
-- **Content:** Mathematical text: informal + formal math from arXiv, libraries, Wikipedia, StackExchange, etc.
-- **Quality Notes:** Used in Llemma / Proof-Pile-2 (larger ~55B tokens combining OpenWebMath + AlgebraicStack + arXiv).
 
-### MathPile (GAIR-NLP/MathPile)
-- **Size:** ~9.5B tokens.
-- **License:** CC BY-NC-SA 4.0 (**non-commercial** — flag / avoid for commercial).
+### peS2o (allenai/peS2o)
+- **URL:** https://huggingface.co/datasets/allenai/peS2o
+- **Size:** ~39–67M documents / ~40–47B tokens / 308 GB.
+- **License:** ODC-By.
+- **Notes:** Cleaned open-access scientific papers (CS, physics, biology, chemistry, etc.).
 
-### Other STEM: arXiv extracts (in Common Pile, Dolma, RedPajama), AlgebraicStack (code for math).
+### NVIDIA Nemotron Math / Science SFT series
+- Commercially friendly (CC-BY-4.0 / NVIDIA Open Data License) high-quality math and STEM post-training data.
 
 ---
 
 ## 4. Books
 
-### Project Gutenberg (manu/project_gutenberg + raw)
-- **URL:** https://huggingface.co/datasets/manu/project_gutenberg | https://www.gutenberg.org/ | Scripts: various including pgcorpus/gutenberg, google-deepmind/pg19
-- **Size:** ~75k books / 14.4 GB on HF; full downloads ~50GB+.
-- **License:** Public Domain (US) for vast majority. Project Gutenberg License.
-- **Languages:** Mostly English + others.
-- **Content:** Classic literature, poetry, etc. Header/footer marked.
-- **Quality Notes:** Clean long-form text. PG-19 subset: 28k pre-1919 books for long-context.
-- **Access:** HF or direct download + scripts. Avoid Books3 / LibGen (copyright issues).
+### Project Gutenberg
+- **URL:** https://huggingface.co/datasets/manu/project_gutenberg + raw Gutenberg / PG-19
+- **Size:** ~75k books / 14+ GB.
+- **License:** Public Domain (US) for vast majority.
+- **Notes:** Clean long-form text. Excellent for long-context.
 
-### Common Pile books components: Included in the 8TB (LOC, Internet Archive digitized PD volumes).
+### Common Pile / Common Corpus book components
+- Pre-1929 books, Library of Congress, Open Culture collections, etc.
 
 ---
 
 ## 5. Academic / Papers
 
-### arXiv components in Common Pile
-- **URL:** https://huggingface.co/datasets/common-pile/arxiv_papers | arxiv_abstracts
-- **Size:** Hundreds of thousands of papers / abstracts.
-- **License:** Openly licensed / as per arXiv (many CC).
-- **Notes:** Full papers mixed; abstracts safer. Use olmocr (allenai/olmocr) for PDF linearization if needed.
-
-### Other: PubMed, etc. in Dolma / Common Pile / RedPajama.
+- arXiv components inside Common Pile (arxiv_papers, arxiv_abstracts)
+- peS2o scientific papers
+- PubMed and other open sources inside Common Pile / Dolma
 
 ---
 
-## 6. Conversational / Instruction / Alignment / SFT
+## 6. Conversational / Instruction / SFT
 
 ### UltraChat 200k (HuggingFaceH4/ultrachat_200k)
 - **URL:** https://huggingface.co/datasets/HuggingFaceH4/ultrachat_200k
-- **Size:** 1.62 GB / ~515k examples (SFT/Gen splits).
+- **Size:** ~515k examples.
 - **License:** MIT.
-- **Languages:** English.
-- **Content:** Filtered multi-turn ChatGPT dialogues. High quality for SFT.
-- **Quality Notes:** Used for Zephyr. Original UltraChat larger but check upstream (some NC notes).
-- **Access:** HF load_dataset.
 
-### OpenAssistant OASST1 (OpenAssistant/oasst1)
+### OpenAssistant OASST1
 - **URL:** https://huggingface.co/datasets/OpenAssistant/oasst1
 - **Size:** 161k messages / 66k trees.
 - **License:** Apache-2.0.
-- **Languages:** 35 languages (EN, ES dominant).
-- **Content:** Human-generated + annotated conversation trees with quality/toxicity labels.
-- **Quality Notes:** Excellent for alignment. Ready-for-export subset.
-- **Access:** HF.
 
-### OpenOrca (Open-Orca/OpenOrca)
+### OpenOrca
 - **URL:** https://huggingface.co/datasets/Open-Orca/OpenOrca
-- **Size:** ~2.9M examples (1M GPT-4 + 3.2M GPT-3.5 completions on FLAN).
+- **Size:** ~2.9M examples.
 - **License:** MIT.
-- **Languages:** English.
-- **Content:** Augmented FLAN for reasoning / instruction following.
-- **Quality Notes:** High quality for Orca-style training. Streaming recommended.
-- **Access:** HF.
 
-### Tulu-3 SFT Mixture (allenai/tulu-3-sft-mixture)
-- **URL:** https://huggingface.co/datasets/allenai/tulu-3-sft-mixture | Collection: https://huggingface.co/collections/allenai/tulu-3-datasets
-- **Size:** 100K-1M scale mixture.
-- **License:** ODC-BY-1.0 (note: some subsets may have different/non-commercial; research artifact).
-- **Content:** Curated mixture for Tulu-3 post-training, targeting core skills, diversity, clear provenance.
-- **Quality Notes:** Modern open post-training data. Check individual subsets carefully.
+### NVIDIA Nemotron Post-Training / SFT series
+- Math, SWE/software engineering, Science, Instruction-Following, Agentic, etc.
+- Predominantly CC-BY-4.0 or NVIDIA Open Data License (commercial use supported).
 
-### Magpie (Magpie-Align)
-- **URL:** GitHub https://github.com/magpie-align/magpie | HF Magpie-Align collections
-- **Size:** Millions (e.g. 1M from Llama-3.1).
-- **License:** Method MIT; generated data often inherits from base model (Llama community or CC-BY-NC in some cases). Check specific releases (Llama-3.1 versions more friendly).
-- **Content:** Self-synthesized alignment data by prompting aligned LLMs with pre-query templates. High quality synthetic.
-- **Notes:** Useful for generating more data yourself with permissive base models.
-
-### ShareGPT variants: Various (e.g. unfiltered, 52k/90k). Licensing murkier (scraped conversations). Prefer above.
+### Tulu-3 SFT Mixture (core safe subsets)
+- **URL:** https://huggingface.co/collections/allenai/tulu-3-datasets
+- **License:** ODC-BY overall (use only clearly permissive subsets).
 
 ---
 
-## 7. Other / Kaggle / Smaller / Tools
-
-- Kaggle has many smaller text datasets (e.g. large-scale English text), but not competitive with above for scale. Search Kaggle for specific domains.
-- Synthetic generators: Magpie method, tools for creating from text/PDFs.
-- AllenAI olmocr: Toolkit for turning PDFs into LLM-ready text.
-- Wikipedia dumps, StackExchange dumps (often in the large corpora above).
+## 7. Access & Conversion
+See `ACCESS_AND_CONVERSION_NOTES.md` for streaming, loading, and converting large datasets to JSONL/Parquet to merge with your existing data.
 
 ---
 
-## Summary Table (Selected Priority - Updated)
+## Summary Table (Commercial-Safe Priority)
 
-| Category       | Dataset                  | Approx Size          | License                  | Priority |
-|----------------|--------------------------|----------------------|--------------------------|----------|
-| General        | Common Pile v0.1        | 8 TB                | PD/Open                  | Highest |
-| General        | FineWeb                 | 15T+ tokens         | ODC-By                   | High    |
-| General        | RefinedWeb (extract)    | 500-650B tokens     | ODC-By                   | High    |
-| Code           | The Stack v2            | 30-67 TB            | Permissive filt.         | Highest |
-| Math           | OpenWebMath             | 14.7B tokens        | ODC-By                   | High    |
-| Math           | OpenMathInstruct-2      | 14M pairs           | CC-BY-4.0                | High    |
-| Math           | OpenMathInstruct-1      | 1.8M pairs          | NVIDIA (commercial OK)   | High    |
-| Math           | Proof-Pile              | 8.3B tokens         | Apache-2.0               | Medium  |
-| Books          | Project Gutenberg       | 14+ GB / 75k        | Public Domain            | High    |
-| Conversational | UltraChat 200k          | 1.6 GB              | MIT                      | High    |
-| Conversational | OASST1                  | 161k msgs           | Apache-2.0               | High    |
-| Conversational | OpenOrca                | 2.9M                | MIT                      | High    |
-| SFT            | Tulu-3 mixture          | ~100k-1M            | ODC-BY (check subsets)   | High    |
-| General        | Dolma                   | 3T tokens           | ODC-BY                   | High    |
+| Category       | Dataset                      | Approx Size          | License                        | Priority |
+|----------------|------------------------------|----------------------|--------------------------------|----------|
+| General        | Common Pile v0.1            | 8 TB                | PD / Open                      | Highest |
+| General        | Common Corpus               | 2.27T tokens        | Truly Open                     | Highest |
+| General        | FineWeb (+ Edu / FineWeb-2) | 15T+ / multilingual | ODC-By                         | High    |
+| Code           | The Stack v2                | 30–67 TB            | Permissive filtered            | Highest |
+| Math           | OpenWebMath                 | 14.7B tokens        | ODC-By                         | High    |
+| Math           | OpenMathInstruct-1/2        | 1.8M / 14M pairs    | NVIDIA / CC-BY-4.0             | High    |
+| Math           | Proof-Pile                  | 8.3B tokens         | Apache-2.0                     | Medium  |
+| STEM           | peS2o                       | ~40B tokens         | ODC-By                         | High    |
+| Books          | Project Gutenberg           | 14+ GB / 75k        | Public Domain                  | High    |
+| Conversational | UltraChat 200k              | ~515k               | MIT                            | High    |
+| Conversational | OASST1                      | 161k msgs           | Apache-2.0                     | High    |
+| Conversational | OpenOrca                    | 2.9M                | MIT                            | High    |
+| SFT            | Nemotron Post-Training series | Various           | CC-BY-4.0 / NVIDIA             | High    |
 
-**Recommendations for FML-Mosaic-527B (updated):**  
-1. **License-safe core pretraining**: Common Pile v0.1 + FineWeb + RefinedWeb extract + The Stack v2.  
-2. **Math/STEM boost**: OpenWebMath + OpenMathInstruct-1/2 + Proof-Pile.  
-3. **Books/long-context**: Project Gutenberg / Common Pile books.  
-4. **Post-training / SFT**: UltraChat 200k + OASST1 + OpenOrca + Tulu-3 mixture (vet subsets) + Magpie-generated if using permissive bases.  
-5. Always re-check the live HF dataset cards for the absolute latest size/license notes and use streaming where possible. Deduplicate and mix carefully against your existing ~26 GB JSON holdings.  
-6. Agent can filter/add to your data.
+**Recommended stack for FML-Mosaic-527B:**  
+1. **Core pretraining**: Common Pile + Common Corpus + FineWeb (+ Edu) + The Stack v2  
+2. **STEM**: peS2o + OpenWebMath + OpenMathInstruct + Proof-Pile + Nemotron Math/Science  
+3. **Code / SWE**: The Stack v2 + Nemotron-SFT-SWE  
+4. **SFT**: UltraChat + OASST1 + OpenOrca + Nemotron Post-Training series  
+5. **Books / long-context**: Project Gutenberg + Common Pile / Common Corpus book sources  
 
-**This inventory will continue to be updated.** Report issues or additional finds in this repo.
+All remaining entries prioritize permissive or commercially friendly licensing. Always re-verify the live Hugging Face dataset card and any linked LICENSE before bulk use.
 
 **Repo:** https://github.com/fenrualabs/fml-mosaic-dataset-inventory
