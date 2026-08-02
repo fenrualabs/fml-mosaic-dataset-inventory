@@ -14,6 +14,10 @@ to a high-quality practical corpus below the 11.2 TB Hugging Face storage
 limit. Keep at least 1 TB remote free: the remote corpus ceiling is therefore
 **10.2 TB**.
 
+Current language scope is **English only**. Ingest only English source splits
+or English-source components, and defer any other language until the plan is
+explicitly changed.
+
 The existing corpus is part of the final program. It must not be deleted,
 moved, overwritten, or silently re-cleaned.
 
