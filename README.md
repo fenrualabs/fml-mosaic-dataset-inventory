@@ -62,10 +62,11 @@ Keep attribution in `DATA_ATTRIBUTION.md` and phase-specific manifests.
 
 ### Existing WOLFRIG corpus
 
-The preserved WOLFRIG generation is immutable text-only input, with 5,830
-shards and separate companion bindings. Do not modify those text-only files.
-Before it enters a three-field mixture, complete its final audit, then create
-a separate wrapper generation and an external join/index:
+The preserved WOLFRIG final inclusion roots are immutable text-only input,
+with 5,166 shards and separate companion bindings. Superseded legacy roots
+are excluded; do not modify any original text-only files. Before it enters a
+three-field mixture, complete its final audit, then create a separate wrapper
+generation and an external join/index:
 
 `output path + SHA-256 → source manifest/resource + SHA-256 → approved normalized license`
 
