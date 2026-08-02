@@ -75,6 +75,11 @@ from its source evidence. Keep an ambiguity report external and do not invent
 a license value. The final verifier and wrapper validation report are required
 before blending the existing generation.
 
+Current state: the separate wrapper
+`wolfrig-canonical-jsonl-20260802-001-clean` has passed full local and remote
+verification for all 5,166 final-inclusion shards. The immutable original
+remains unchanged; use only the verified wrapper in any mixture.
+
 ## Remote layout
 
 ```text
