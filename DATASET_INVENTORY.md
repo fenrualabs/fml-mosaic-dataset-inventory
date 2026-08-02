@@ -1,9 +1,9 @@
-# FML-Mosaic-527B Dataset Inventory
+# FML-Mosaic-527B Dataset Inventory (Expanded)
 
 **Compiled for Fenrua Labs / FML-Mosaic-527B text generation model training.**  
-**Date:** 2026-08-02  
-**Focus:** High-quality text-only datasets. Prioritize permissive licenses (Apache-2.0, MIT, BSD, ODC-By, CC-BY, Public Domain). Avoid restrictive (NC, SA with issues, unclear).  
-**Sources searched:** Hugging Face, GitHub, Common Crawl derivatives, AllenAI, Papers with Code, Kaggle, academic repos. Extensive deep search.  
+**Date:** 2026-08-02 (updated with continued deep search)  
+**Focus:** High-quality text-only datasets. Prioritize permissive licenses (Apache-2.0, MIT, BSD, ODC-By, CC-BY, Public Domain, commercially permissive). Avoid or flag restrictive (NC, unclear).  
+**Sources searched:** Hugging Face, GitHub, Common Crawl derivatives, AllenAI, BigCode, NVIDIA, EleutherAI, Papers with Code, Kaggle, academic repos. Extensive multi-round deep search.  
 
 **User already has ~26GB JSONs.** This extends resources.  
 
@@ -19,7 +19,7 @@
 - **Size:** 8 TB raw; ~1.8 TB filtered/deduped. ~233M documents.
 - **License:** Public Domain + Openly Licensed sources (highly permissive / license-safe).
 - **Languages:** Multilingual, English dominant.
-- **Content:** 30 sources: research papers, code, books, encyclopedias, educational materials, audio transcripts, etc.
+- **Content:** 30 sources: research papers, code, books, encyclopedias, educational materials, audio transcripts, etc. Includes arxiv_papers, arxiv_abstracts, caselaw, biodiversity, etc.
 - **Quality Notes:** Largest fully open/permissive pretraining set. Used to train competitive Comma 7B models. Excellent for commercial use.
 - **Access:** HF collections (raw + filtered). Streaming recommended.
 
@@ -29,7 +29,7 @@
 - **License:** ODC-By 1.0 (+ Common Crawl ToU).
 - **Languages:** English.
 - **Content:** Heavily filtered, deduplicated Common Crawl (96 dumps). High quality web text.
-- **Quality Notes:** Outperforms C4, Dolma, Pile, SlimPajama, RedPajama on many benchmarks. Includes FineWeb-Edu subset.
+- **Quality Notes:** Outperforms C4, Dolma, Pile, SlimPajama, RedPajama on many benchmarks. Includes FineWeb-Edu subset (educational filter, 1.3T+).
 - **Access:** HF load_dataset / streaming. Subsets available (10BT, 100BT, etc.).
 
 ### FineWeb-2
@@ -37,6 +37,15 @@
 - **Size:** Large (billions of rows, multi-lingual scale).
 - **License:** ODC-By.
 - **Notes:** Multilingual extension / improved pipeline.
+
+### RefinedWeb (tiiuae/falcon-refinedweb)
+- **URL:** https://huggingface.co/datasets/tiiuae/falcon-refinedweb
+- **Size:** Public extract ~500-650B tokens / ~2.8 TB clean text (968M pages); full was ~5T.
+- **License:** ODC-By 1.0 (+ CC ToU).
+- **Languages:** English.
+- **Content:** Stringent filtering + large-scale deduplication of Common Crawl. Used for Falcon models.
+- **Quality Notes:** High quality web-only. Good complement to FineWeb.
+- **Access:** HF.
 
 ### Dolma (allenai/dolma)
 - **URL:** https://huggingface.co/datasets/allenai/dolma | https://allenai.github.io/dolma/
@@ -54,6 +63,9 @@
 - **Languages:** Multi (EN dominant).
 - **Content:** CommonCrawl, C4, GitHub, Books, ArXiv, Wikipedia, StackExchange.
 - **Notes:** Good annotations for further filtering. Books subset may have issues (often dropped).
+
+### SlimPajama-627B
+- Apache 2.0, 627B tokens cleaned/deduped RedPajama.
 
 ### The Pile (EleutherAI/pile)
 - **URL:** https://huggingface.co/datasets/EleutherAI/pile | https://pile.eleuther.ai/
@@ -98,13 +110,32 @@
 - **Quality Notes:** Models trained on it punch above weight for math. Paper: arXiv:2310.06786.
 - **Access:** HF load_dataset.
 
-### MathPile (GAIR-NLP/MathPile)
-- **URL:** Search HF/GitHub GAIR-NLP/MathPile
-- **Size:** ~9.5B tokens.
-- **License:** CC BY-NC-SA 4.0 (**non-commercial** — use cautiously or avoid for commercial models).
-- **Notes:** Good math corpus but restrictive license.
+### OpenMathInstruct-1 (nvidia/OpenMathInstruct-1)
+- **URL:** https://huggingface.co/datasets/nvidia/OpenMathInstruct-1
+- **Size:** 1.8M problem-solution pairs / ~8.94 GB.
+- **License:** NVIDIA License (permits commercial usage).
+- **Content:** Synthesized code-interpreter solutions for GSM8K + MATH using Mixtral.
+- **Quality Notes:** Commercially permissive. Strong for math instruction tuning. Paper arXiv:2402.10176.
 
-### Other STEM: arXiv extracts (in Common Pile, Dolma, RedPajama), Proof-Pile, etc. Prefer Common Pile arxiv_papers / abstracts.
+### OpenMathInstruct-2 (nvidia/OpenMathInstruct-2)
+- **URL:** https://huggingface.co/datasets/nvidia/OpenMathInstruct-2
+- **Size:** 14M problem-solution pairs / ~12.6 GB.
+- **License:** CC-BY-4.0.
+- **Content:** Larger scale, using Llama-3.1-405B, including new synthesized questions. Decontaminated.
+- **Quality Notes:** Excellent scale-up for math SFT. Paper arXiv:2410.01560.
+
+### Proof-Pile (hoskinson-center/proof-pile)
+- **URL:** https://huggingface.co/datasets/hoskinson-center/proof-pile
+- **Size:** 13 GB / 8.3B tokens.
+- **License:** Apache-2.0.
+- **Content:** Mathematical text: informal + formal math from arXiv, libraries, Wikipedia, StackExchange, etc.
+- **Quality Notes:** Used in Llemma / Proof-Pile-2 (larger ~55B tokens combining OpenWebMath + AlgebraicStack + arXiv).
+
+### MathPile (GAIR-NLP/MathPile)
+- **Size:** ~9.5B tokens.
+- **License:** CC BY-NC-SA 4.0 (**non-commercial** — flag / avoid for commercial).
+
+### Other STEM: arXiv extracts (in Common Pile, Dolma, RedPajama), AlgebraicStack (code for math).
 
 ---
 
@@ -119,7 +150,7 @@
 - **Quality Notes:** Clean long-form text. PG-19 subset: 28k pre-1919 books for long-context.
 - **Access:** HF or direct download + scripts. Avoid Books3 / LibGen (copyright issues).
 
-### Common Pile books components: Included in the 8TB.
+### Common Pile books components: Included in the 8TB (LOC, Internet Archive digitized PD volumes).
 
 ---
 
@@ -135,7 +166,7 @@
 
 ---
 
-## 6. Conversational / Instruction / Alignment
+## 6. Conversational / Instruction / Alignment / SFT
 
 ### UltraChat 200k (HuggingFaceH4/ultrachat_200k)
 - **URL:** https://huggingface.co/datasets/HuggingFaceH4/ultrachat_200k
@@ -164,41 +195,60 @@
 - **Quality Notes:** High quality for Orca-style training. Streaming recommended.
 - **Access:** HF.
 
+### Tulu-3 SFT Mixture (allenai/tulu-3-sft-mixture)
+- **URL:** https://huggingface.co/datasets/allenai/tulu-3-sft-mixture | Collection: https://huggingface.co/collections/allenai/tulu-3-datasets
+- **Size:** 100K-1M scale mixture.
+- **License:** ODC-BY-1.0 (note: some subsets may have different/non-commercial; research artifact).
+- **Content:** Curated mixture for Tulu-3 post-training, targeting core skills, diversity, clear provenance.
+- **Quality Notes:** Modern open post-training data. Check individual subsets carefully.
+
+### Magpie (Magpie-Align)
+- **URL:** GitHub https://github.com/magpie-align/magpie | HF Magpie-Align collections
+- **Size:** Millions (e.g. 1M from Llama-3.1).
+- **License:** Method MIT; generated data often inherits from base model (Llama community or CC-BY-NC in some cases). Check specific releases (Llama-3.1 versions more friendly).
+- **Content:** Self-synthesized alignment data by prompting aligned LLMs with pre-query templates. High quality synthetic.
+- **Notes:** Useful for generating more data yourself with permissive base models.
+
 ### ShareGPT variants: Various (e.g. unfiltered, 52k/90k). Licensing murkier (scraped conversations). Prefer above.
 
 ---
 
-## 7. Other / Kaggle / Smaller
+## 7. Other / Kaggle / Smaller / Tools
 
 - Kaggle has many smaller text datasets (e.g. large-scale English text), but not competitive with above for scale. Search Kaggle for specific domains.
-- Synthetic generators: tools exist but not raw datasets.
+- Synthetic generators: Magpie method, tools for creating from text/PDFs.
 - AllenAI olmocr: Toolkit for turning PDFs into LLM-ready text.
+- Wikipedia dumps, StackExchange dumps (often in the large corpora above).
 
 ---
 
-## Summary Table (Selected Priority)
+## Summary Table (Selected Priority - Updated)
 
-| Category       | Dataset              | Approx Size      | License          | Priority |
-|----------------|----------------------|------------------|------------------|----------|
-| General        | Common Pile v0.1    | 8 TB            | PD/Open          | Highest |
-| General        | FineWeb             | 15T+ tokens     | ODC-By           | High    |
-| Code           | The Stack v2        | 30-67 TB        | Permissive filt. | Highest |
-| Math           | OpenWebMath         | 14.7B tokens    | ODC-By           | High    |
-| Books          | Project Gutenberg   | 14+ GB / 75k    | Public Domain    | High    |
-| Conversational | UltraChat 200k      | 1.6 GB          | MIT              | High    |
-| Conversational | OASST1              | 161k msgs       | Apache-2.0       | High    |
-| Conversational | OpenOrca            | 2.9M            | MIT              | High    |
-| General        | Dolma               | 3T tokens       | ODC-BY           | High    |
+| Category       | Dataset                  | Approx Size          | License                  | Priority |
+|----------------|--------------------------|----------------------|--------------------------|----------|
+| General        | Common Pile v0.1        | 8 TB                | PD/Open                  | Highest |
+| General        | FineWeb                 | 15T+ tokens         | ODC-By                   | High    |
+| General        | RefinedWeb (extract)    | 500-650B tokens     | ODC-By                   | High    |
+| Code           | The Stack v2            | 30-67 TB            | Permissive filt.         | Highest |
+| Math           | OpenWebMath             | 14.7B tokens        | ODC-By                   | High    |
+| Math           | OpenMathInstruct-2      | 14M pairs           | CC-BY-4.0                | High    |
+| Math           | OpenMathInstruct-1      | 1.8M pairs          | NVIDIA (commercial OK)   | High    |
+| Math           | Proof-Pile              | 8.3B tokens         | Apache-2.0               | Medium  |
+| Books          | Project Gutenberg       | 14+ GB / 75k        | Public Domain            | High    |
+| Conversational | UltraChat 200k          | 1.6 GB              | MIT                      | High    |
+| Conversational | OASST1                  | 161k msgs           | Apache-2.0               | High    |
+| Conversational | OpenOrca                | 2.9M                | MIT                      | High    |
+| SFT            | Tulu-3 mixture          | ~100k-1M            | ODC-BY (check subsets)   | High    |
+| General        | Dolma                   | 3T tokens           | ODC-BY                   | High    |
 
-**Recommendations for FML-Mosaic-527B:**  
-1. Start with Common Pile (license safe) + FineWeb for general.  
-2. The Stack v2 for code.  
-3. OpenWebMath for math/STEM.  
-4. Gutenberg for books/long context.  
-5. UltraChat/OASST/OpenOrca for post-training/SFT.  
-6. Dedup, filter, mix carefully. Check latest HF cards for exact current licenses/sizes.  
-7. Agent can filter/add to your existing 26GB JSONs.
+**Recommendations for FML-Mosaic-527B (updated):**  
+1. **License-safe core pretraining**: Common Pile v0.1 + FineWeb + RefinedWeb extract + The Stack v2.  
+2. **Math/STEM boost**: OpenWebMath + OpenMathInstruct-1/2 + Proof-Pile.  
+3. **Books/long-context**: Project Gutenberg / Common Pile books.  
+4. **Post-training / SFT**: UltraChat 200k + OASST1 + OpenOrca + Tulu-3 mixture (vet subsets) + Magpie-generated if using permissive bases.  
+5. Always re-check the live HF dataset cards for the absolute latest size/license notes and use streaming where possible. Deduplicate and mix carefully against your existing ~26 GB JSON holdings.  
+6. Agent can filter/add to your data.
 
-**This inventory will be updated.** Report issues or additional finds in this repo.
+**This inventory will continue to be updated.** Report issues or additional finds in this repo.
 
 **Repo:** https://github.com/fenrualabs/fml-mosaic-dataset-inventory
