@@ -11,6 +11,10 @@ Follow this document exactly. Do not improvise or change priorities unless expli
 
 **Goal:** Build the highest quality practical mixture that fits under 11 TB.
 
+**Current language scope:** English only. Ingest only English source splits or
+English-source components. Defer every other language until the user explicitly
+updates this plan.
+
 ---
 
 ## 0. Authentication (Mandatory)
@@ -108,7 +112,7 @@ Download and convert these first. They are small and high quality.
 
 | Dataset          | Exact Hugging Face ID             | Target Size after filtering | Notes |
 |------------------|-----------------------------------|-----------------------------|-------|
-| The Stack v2     | `bigcode/the-stack-v2` (prefer train-smol or selected languages) | 1.5 – 2.5 TB | Heavily filter. Do not download the full 32 TB deduped version. |
+| The Stack v2     | `bigcode/the-stack-v2` (prefer English-language or language-neutral code components) | 1.5 – 2.5 TB | Heavily filter. Do not download the full 32 TB deduped version. |
 | FineWeb          | `HuggingFaceFW/fineweb`           | 0.5 – 1.5 TB               | Only after Phase 2 is well underway. Prefer sample-350BT. |
 
 ### Phase 4 – Additional SFT (Keep Small)
@@ -131,6 +135,8 @@ Only after Phase 1–3 are progressing well:
 8. Leave at least 1 TB free on the 11.2 TB storage as buffer.
 9. Use the 5 TB local disk only for active training mixtures.
 10. Log every major action.
+11. Keep all current corpus intake English only; do not include other-language
+    splits or components without an explicit user instruction.
 
 ---
 
