@@ -1,121 +1,147 @@
-# AGENT START PLAN – FML-Mosaic-527B High Quality Mixture
+# AGENT START PLAN – FML-Mosaic-527B (Precise Version)
 
-**This is the authoritative plan for the agent.**  
-Follow this file step by step.
+**This is the single source of truth for the agent.**  
+Follow this document exactly. Do not improvise or change priorities unless explicitly instructed.
 
-**Hardware constraints:**
-- Remote storage available: 11.2 TB
+**Hardware constraints (do not exceed):**
+- Remote storage: 11.2 TB available
 - Local training disk: 5 TB
 - Internet: ~950 MB/s
-- Existing data: ~25 GB of text JSONs
+- Existing data: ~25 GB of text JSONs (preserve them)
 
-**Target:** Highest quality practical mixture (aim for 7–10 TB total)
+**Goal:** Build the highest quality practical mixture that fits under 11 TB.
+
+---
+
+## 0. Authentication (Mandatory)
+
+You **must** use the Hugging Face access token that has been provided to you.
+
+- Log in with the token before any download:
+  ```bash
+  huggingface-cli login --token $HF_TOKEN
+  ```
+  or set the environment variable `HF_TOKEN` and use the `huggingface_hub` library.
+
+- Prefer **public** datasets only. Do not try to access gated or private datasets unless the token specifically grants access and the plan explicitly includes them.
+
+- Always work with the public Hugging Face Hub datasets listed in this plan.
 
 ---
 
 ## 1. Directory Structure (Create First)
 
 ```bash
-/data/
-  raw/
-  filtered/
-  jsonl/
-    existing/          # put your current 25 GB here
-    phase1/
-    phase2/
-    phase3/
-  mixtures/
-  attribution/
-  logs/
+mkdir -p /data/{raw,filtered,jsonl/{existing,phase1,phase2,phase3,sft},mixtures,attribution,logs}
 ```
+
+- Put the existing ~25 GB of JSONs into `/data/jsonl/existing/`
+- Never overwrite existing data
 
 ---
 
-## 2. Required JSONL Schema
+## 2. Mandatory JSONL Schema
 
-Every example must follow this format:
+Every single example you write must use this exact schema:
 
 ```json
 {
-  "text": "the actual text content",
-  "source": "openwebmath | fineweb-edu | pes2o | stack-v2 | gutenberg | etc",
-  "license": "ODC-By-1.0 + CommonCrawl-ToU | MIT | Apache-2.0 | Public Domain | CC-BY-4.0 | NVIDIA"
+  "text": "the actual text content here",
+  "source": "openwebmath",
+  "license": "ODC-By-1.0 + CommonCrawl-ToU"
 }
 ```
 
-Always keep the `source` and `license` fields. See `LICENSE_HANDLING_ODC_BY.md`.
+Allowed `license` values (use the correct one):
+- `ODC-By-1.0 + CommonCrawl-ToU`
+- `Public Domain`
+- `MIT`
+- `Apache-2.0`
+- `CC-BY-4.0`
+- `NVIDIA`
+- `PD / Open`
+
+See `LICENSE_HANDLING_ODC_BY.md` for attribution rules.
 
 ---
 
-## 3. Priority Download & Processing Order
+## 3. Execution Order (Follow Strictly)
 
-### Phase 1 – Immediate High-Signal (Start Now)
-These are smaller, extremely high quality, and give you usable data quickly:
+### Phase 1 – High-Signal Small Datasets (Start Immediately)
 
-| Order | Dataset | Hugging Face ID | Approx Size | License |
-|-------|---------|------------------|-------------|--------|
-| 1 | OpenWebMath | `open-web-math/open-web-math` | 40–55 GB | ODC-By |
-| 2 | OpenMathInstruct-1 | `nvidia/OpenMathInstruct-1` | ~9 GB | NVIDIA (commercial OK) |
-| 3 | OpenMathInstruct-2 | `nvidia/OpenMathInstruct-2` | ~13 GB | CC-BY-4.0 |
-| 4 | Project Gutenberg | `manu/project_gutenberg` | ~14 GB | Public Domain |
-| 5 | UltraChat 200k | `HuggingFaceH4/ultrachat_200k` | 1.6 GB | MIT |
-| 6 | OASST1 | `OpenAssistant/oasst1` | < 1 GB | Apache-2.0 |
-| 7 | OpenOrca | `Open-Orca/OpenOrca` | several GB | MIT |
+Download and convert these first. They are small and high quality.
 
-**Action:** Download → convert to the JSONL schema → put in `/data/jsonl/phase1/`
+| Priority | Dataset                    | Exact Hugging Face ID                  | Target Size | License                          |
+|----------|----------------------------|----------------------------------------|-------------|----------------------------------|
+| 1        | OpenWebMath                | `open-web-math/open-web-math`          | ~27–55 GB  | ODC-By-1.0 + CommonCrawl-ToU    |
+| 2        | OpenMathInstruct-1         | `nvidia/OpenMathInstruct-1`            | ~9 GB      | NVIDIA                          |
+| 3        | OpenMathInstruct-2         | `nvidia/OpenMathInstruct-2`            | ~13 GB     | CC-BY-4.0                       |
+| 4        | Project Gutenberg          | `manu/project_gutenberg`               | ~14 GB     | Public Domain                   |
+| 5        | UltraChat 200k             | `HuggingFaceH4/ultrachat_200k`         | ~1.6 GB    | MIT                             |
+| 6        | OASST1                     | `OpenAssistant/oasst1`                 | < 1 GB     | Apache-2.0                      |
+| 7        | OpenOrca                   | `Open-Orca/OpenOrca`                   | several GB | MIT                             |
+
+**Instructions for Phase 1:**
+1. Use `datasets` library or `huggingface-cli` with the token.
+2. Convert every example to the mandatory JSONL schema.
+3. Save into `/data/jsonl/phase1/`
+4. Log progress in `/data/logs/`
 
 ### Phase 2 – Core Knowledge (Highest Priority Large Sets)
 
-| Order | Dataset | Hugging Face ID | Target Size | License |
-|-------|---------|------------------|-------------|--------|
-| 1 | peS2o | `allenai/peS2o` | ~308 GB | ODC-By |
-| 2 | FineWeb-Edu | `HuggingFaceFW/fineweb-edu` | 1.5 – 2.5 TB | ODC-By |
-| 3 | Common Pile (filtered components first) | See `COMMON_PILE_COMPONENTS.md` | 1.5 – 2.5 TB | PD / Open |
+| Priority | Dataset              | Exact Hugging Face ID              | Target Size     | License                       |
+|----------|----------------------|------------------------------------|-----------------|-------------------------------|
+| 1        | peS2o (prefer V2)    | `allenai/peS2o`                    | ~308 GB        | ODC-By-1.0                   |
+| 2        | FineWeb-Edu          | `HuggingFaceFW/fineweb-edu`        | 1.5 – 2.5 TB   | ODC-By-1.0 + CommonCrawl-ToU |
+| 3        | Common Pile Filtered | See `COMMON_PILE_COMPONENTS.md`    | 1.5 – 2.5 TB   | PD / Open                    |
 
-Start with the highest value Common Pile components (arXiv, books, educational, scientific).
+**FineWeb-Edu instructions:**
+- Prefer starting with the official samples: `sample-10BT`, `sample-100BT`, then `sample-350BT`
+- Then move to individual high-quality dumps or the full set if space remains
+- Always use `streaming=True` when possible and write filtered JSONL on the fly
+
+**Common Pile instructions:**
+- Start with the highest value components first (arXiv, books, educational, scientific, StackExchange)
+- Use the filtered collection when available
 
 ### Phase 3 – Code + Additional Web
 
-| Dataset | Hugging Face ID | Target Size after filtering | Notes |
-|---------|------------------|-----------------------------|-------|
-| The Stack v2 | `bigcode/the-stack-v2` | 1.5 – 2.5 TB | **Heavily filter** – do not take full size |
-| FineWeb (selected) | `HuggingFaceFW/fineweb` | 0.5 – 1.5 TB | Prefer sample-350BT or high-quality dumps |
+| Dataset          | Exact Hugging Face ID             | Target Size after filtering | Notes |
+|------------------|-----------------------------------|-----------------------------|-------|
+| The Stack v2     | `bigcode/the-stack-v2` (prefer train-smol or selected languages) | 1.5 – 2.5 TB | Heavily filter. Do not download the full 32 TB deduped version. |
+| FineWeb          | `HuggingFaceFW/fineweb`           | 0.5 – 1.5 TB               | Only after Phase 2 is well underway. Prefer sample-350BT. |
 
-### Phase 4 – Additional SFT (keep relatively small)
+### Phase 4 – Additional SFT (Keep Small)
 
-- Selected NVIDIA Nemotron SFT sets (Math, SWE, Science, Instruction)
-- Put in `/data/jsonl/phase1/` or a dedicated SFT folder
-
----
-
-## 4. How the Agent Should Work
-
-1. Always process one dataset at a time.
-2. Prefer **streaming** for large datasets (`streaming=True`).
-3. Apply quality filters while streaming when possible.
-4. Write clean JSONL files with the required schema.
-5. Update a running attribution / license manifest.
-6. After Phase 1 + peS2o + FineWeb-Edu are ready, you already have a strong core mixture and can start experimental training runs.
-7. Use the 5 TB local disk only for active shuffled training batches. Keep the full store on the 11.2 TB remote.
+Only after Phase 1–3 are progressing well:
+- Selected public NVIDIA Nemotron SFT datasets (Math, Science, Instruction, SWE)
+- Put them in `/data/jsonl/sft/`
 
 ---
 
-## 5. Success Criteria
+## 4. Strict Rules for the Agent (Do Not Drift)
 
-- Total high-quality data between 7–10 TB
-- All examples carry `source` + `license` fields
-- Existing 25 GB JSONs are preserved and can be mixed in
-- Clear DATA_ATTRIBUTION.md is maintained
-- Phase 1 completed first so training can start early
+1. Follow the priority order above. Do not jump ahead.
+2. Always authenticate with the Hugging Face token first.
+3. Prefer public datasets listed in this plan.
+4. Use streaming for any dataset larger than ~100 GB.
+5. Always write the mandatory JSONL schema with `text`, `source`, and `license`.
+6. Keep a running attribution file in `/data/attribution/`.
+7. Never delete or overwrite the existing 25 GB of data.
+8. Leave at least 1 TB free on the 11.2 TB storage as buffer.
+9. Use the 5 TB local disk only for active training mixtures.
+10. Log every major action.
 
 ---
 
-## 6. Reference Files in This Repo
+## 5. Reference Files (Read Them)
 
-- `DATASET_INVENTORY.md` → full list of safe datasets
-- `COMMON_PILE_COMPONENTS.md` → breakdown of Common Pile sources
-- `LICENSE_HANDLING_ODC_BY.md` → how to handle ODC-By datasets
-- `ACCESS_AND_CONVERSION_NOTES.md` → conversion tips
-- `RECOMMENDED_MIXTURE_PLAN.md` → high-level overview
+- `DATASET_INVENTORY.md` – full safe dataset list
+- `COMMON_PILE_COMPONENTS.md` – Common Pile source breakdown
+- `LICENSE_HANDLING_ODC_BY.md` – how to handle ODC-By datasets
+- `ACCESS_AND_CONVERSION_NOTES.md` – conversion tips
 
-**This AGENT_START_PLAN.md is the operational plan. Follow it.**
+---
+
+**This document is the operational plan.**  
+Execute it in order. Do not invent new datasets or change the priority without explicit instruction.
