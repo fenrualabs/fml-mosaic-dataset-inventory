@@ -92,7 +92,9 @@ before blending the existing generation.
 Current state: the separate wrapper
 `wolfrig-canonical-jsonl-20260802-001-clean` has passed full local and remote
 verification for all 5,166 final-inclusion shards. The immutable original
-remains unchanged; use only the verified wrapper in any mixture.
+remains unchanged. While the plan is English-only, do not blend this preserved
+wrapper until external English eligibility evidence covers the selected shards;
+its structural verification alone is not a language decision.
 
 ## Remote layout
 
