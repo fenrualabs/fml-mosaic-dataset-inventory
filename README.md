@@ -31,10 +31,11 @@ moved, overwritten, or silently re-cleaned.
 | Canonical remote corpus | Hugging Face dataset `Fenrua-Labs/FML-Mosaic-527B-Corpus` | Private while building; this is the canonical remote store. |
 | Legacy HF control handoff | `Fenrua-Labs/FML-Mosaic-527B-Corpus-Prep` | Stale controls only; it does not govern this plan or receive corpus payloads. |
 
-The local disk currently has roughly 3.1 TB free. Do not attempt to retain
-the full corpus locally. Reserve 2.5–3.0 TB for active training and limit
-conversion staging to the remainder. The Hugging Face dataset repository, not
-the local disk, is the durable corpus store.
+Do not rely on a static local-free-space figure in this document. Check
+`df` before every new source, keep the plan's 1 TB capacity buffer, and do
+not attempt to retain the full corpus locally. Reserve 2.5–3.0 TB for active
+training and limit conversion staging to the remainder. The Hugging Face
+dataset repository, not the local disk, is the durable corpus store.
 
 ## Canonical data contract
 
@@ -59,6 +60,14 @@ The only allowed license values are:
 Write raw-source details, remote revisions, hashes, shard checksums, row
 counts, recovery state, and validation reports into companion manifests.
 Keep attribution in `DATA_ATTRIBUTION.md` and phase-specific manifests.
+
+A source-derived `jsonl/phase*/` path is preserved conversion output, not
+automatically training input. Only `jsonl/training-ready/` is consumable by
+a training mixture. Promotion requires a separate immutable-input canonical
+writer, a passed exact-schema/hash validation, and a passed clean-text audit
+with zero matches for URLs/emails, legacy vendor-or-model references,
+credential/secret patterns, and labelled provenance. Input hashes, dropped-row
+counts, source resources, and every validation receipt remain external.
 
 ### Existing WOLFRIG corpus
 
@@ -88,18 +97,25 @@ FML-Mosaic-527B-Corpus/
   DATA_ATTRIBUTION.md
   jsonl/
     existing/             # schema-wrapped WOLFRIG only after validation
-    phase1/
+    phase1/               # preserved source-derived candidates
     phase2/
     phase3/
     sft/
+    training-ready/       # only zero-residue canonical rows may be trained
+      phase1/
+      phase2/
+      phase3/
+      sft/
   manifests/
     existing/
     phase1/
     phase2/
     phase3/
     sft/
+    training-ready/       # external lineage, hashes, and drop counts
   mixtures/
   validation/
+    training-ready/       # external canonical validation and content audits
 ```
 
 Each source is streamed into 512 MiB JSONL shards. A shard is uploaded only
@@ -107,6 +123,13 @@ after it is closed, JSON-valid, and recorded in a companion manifest with its
 SHA-256 and record count. Upload the source manifest and validation result with
 the shards. Verify the remote revision and checksums before reclaiming
 generated local staging. Never reclaim the immutable WOLFRIG source.
+
+A canonical training-ready source receives a second, stricter remote chain:
+upload only its zero-residue JSONL under `jsonl/training-ready/`, publish its
+canonical manifest and audits under matching external companion paths, verify
+every remote hash, persist exactly one canonical completion event, and read the
+receipt and event back from the Hub. Do not train from a phase path merely
+because its original source receipt passed.
 
 ## Source execution order
 
