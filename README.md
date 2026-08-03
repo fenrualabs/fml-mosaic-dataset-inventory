@@ -67,9 +67,12 @@ a training mixture while the English-only plan is in force. Promotion requires
 a separate immutable-input canonical writer with an explicit English selection,
 a passed exact-schema/hash validation, and a passed clean-text audit with zero
 matches for URLs/emails, legacy vendor-or-model references, credential/secret
-patterns, labelled provenance, non-English rows, and undecidable rows. Input
-hashes, dropped-row counts, source resources, language-selection evidence, and
-every validation receipt remain external.
+patterns, and labelled provenance. English eligibility is also bound externally:
+use the pinned public source-card declaration for an English-only source split
+or component; use the record-level English gate for a mixed source, which must
+then pass with zero non-English or undecidable rows. Input hashes, dropped-row
+counts, source resources, language-selection evidence, and every validation
+receipt remain external.
 
 ### Existing WOLFRIG corpus
 
