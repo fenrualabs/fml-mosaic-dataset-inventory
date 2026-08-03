@@ -62,12 +62,14 @@ counts, recovery state, and validation reports into companion manifests.
 Keep attribution in `DATA_ATTRIBUTION.md` and phase-specific manifests.
 
 A source-derived `jsonl/phase*/` path is preserved conversion output, not
-automatically training input. Only `jsonl/training-ready/` is consumable by
-a training mixture. Promotion requires a separate immutable-input canonical
-writer, a passed exact-schema/hash validation, and a passed clean-text audit
-with zero matches for URLs/emails, legacy vendor-or-model references,
-credential/secret patterns, and labelled provenance. Input hashes, dropped-row
-counts, source resources, and every validation receipt remain external.
+automatically training input. Only `jsonl/training-ready/english/` is consumable by
+a training mixture while the English-only plan is in force. Promotion requires
+a separate immutable-input canonical writer with an explicit English selection,
+a passed exact-schema/hash validation, and a passed clean-text audit with zero
+matches for URLs/emails, legacy vendor-or-model references, credential/secret
+patterns, labelled provenance, non-English rows, and undecidable rows. Input
+hashes, dropped-row counts, source resources, language-selection evidence, and
+every validation receipt remain external.
 
 ### Existing WOLFRIG corpus
 
@@ -101,11 +103,12 @@ FML-Mosaic-527B-Corpus/
     phase2/
     phase3/
     sft/
-    training-ready/       # only zero-residue canonical rows may be trained
-      phase1/
-      phase2/
-      phase3/
-      sft/
+    training-ready/       # only English, zero-residue canonical rows may be trained
+      english/
+        phase1/
+        phase2/
+        phase3/
+        sft/
   manifests/
     existing/
     phase1/
@@ -125,8 +128,9 @@ the shards. Verify the remote revision and checksums before reclaiming
 generated local staging. Never reclaim the immutable WOLFRIG source.
 
 A canonical training-ready source receives a second, stricter remote chain:
-upload only its zero-residue JSONL under `jsonl/training-ready/`, publish its
-canonical manifest and audits under matching external companion paths, verify
+upload only its English-screened, zero-residue JSONL under
+`jsonl/training-ready/english/`, publish its canonical manifest and audits
+under matching external companion paths, verify
 every remote hash, persist exactly one canonical completion event, and read the
 receipt and event back from the Hub. Do not train from a phase path merely
 because its original source receipt passed.
